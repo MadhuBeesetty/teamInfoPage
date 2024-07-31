@@ -1,15 +1,15 @@
 import React from 'react';
 
-const DisplayPage = () => {
+const AddPage = () => {
   return (
     <div>
       <header>
         <p>
-          Display Page
+          Add Page
         </p>
       </header>
     </div>
   );
 }
 
-export default DisplayPage;
+export default AddPage;
