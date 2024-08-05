@@ -7,9 +7,15 @@ const ListPage = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-    const res = await fetch('http://localhost:3000');
-    console.log(res.json(), 'this is mongodb data');
+    try {
+      const res = await fetch('http://localhost:3000/mongocall');
+      const data = await res.json();
+      console.log(data, 'this is mongodb data');
+    } catch(error){
+      console.error('Error fetching data:', error);
     }
+  };
+
     fetchData();
   }, [])
 

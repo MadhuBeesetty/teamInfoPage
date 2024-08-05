@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 
 interface IndividualData {
   firstName: string;
@@ -18,6 +18,20 @@ const inputData: IndividualData =
   };
 
 const AddPage = () => {
+
+  useEffect(() => {
+    const fetchData = async () => {
+    try {
+      const res = await fetch('http://localhost:3000/saveTeamInfoData');
+      const data = await res.json();
+      console.log(data, 'this is mongodb data');
+    } catch(error){
+      console.error('Error fetching data:', error);
+    }
+  };
+
+    fetchData();
+  }, [])
 
 const [addPageData, setAddPageData] = useState<IndividualData>(inputData)
 
