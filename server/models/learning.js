@@ -5,5 +5,5 @@ const learningSchema = new mongoose.Schema({
   description: String
 })
 
-const learningModel = mongoose.model("Item", learningSchema)
+const learningModel = mongoose.model("learning", learningSchema)
 module.exports = learningModel
