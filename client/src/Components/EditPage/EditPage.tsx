@@ -51,9 +51,23 @@ const EditPage: React.FC<EditPageProps> = ({individualData}) => {
     }
   };
 
-  const onDelete = () => {
+  const onDelete = async () => {
     if(individualData.employeeStatus === "admin"){
-      console.log("this person can delete data");
+      try {
+        const response = await fetch(`http://localhost:3000/deleteTeamInfo/${individualData._id}`, {
+          method: 'DELETE'
+        });
+
+        if (response.ok) {
+          console.log("user deleted");
+        } else {
+          console.error('Error deleting data');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    }else{
+      console.log("user doesnt have permissions to delete");
     }
     // make an api call to add this new data to database;
     console.log(editPageData);
