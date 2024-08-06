@@ -67,6 +67,17 @@ app.put('/updateTeamInfo/:id', async (req, res) => {
   }
 });
 
+// Endpoint to delete a document
+app.delete('/deleteTeamInfo/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    await teamInfoModel.findByIdAndDelete(id);
+    res.json({ message: 'Document deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ message: 'Error deleting data', error });
+  }
+});
+
 app.listen(3000, () => {
   console.log("app is running");
 })
