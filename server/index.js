@@ -11,39 +11,46 @@ app.use(express.json())
 app.use(cors())
 connectDB();
 
-const newLearning = new learningModel({
-  name: 'Node.js Basics22244',
-  description: 'A beginner-friendly guide to Node.js22244'
-});
+// const newLearning = new learningModel({
+//   name: 'Node.js Basics22244',
+//   description: 'A beginner-friendly guide to Node.js22244'
+// });
 
-const newTeamInfoData = new teamInfoModel({
-    firstName: "employee4",
-    lastName: "lemployee4",
-    phoneNumber: "12444443344",
-    email: "employee4@email.com",
-    employeeStatus: "regular"
-});
-
-const newLearningg = () => {
-  newLearning.save()
-  .then(() => console.log('Learning saved!'))
-  .catch(err => console.error('Error saving learning:', err));
-}
-
-const newTeamInfoInput = () => {
-  newTeamInfoData.save()
-  .then(() => console.log('teamInfoData saved!'))
-  .catch(err => console.error('Error saving learning:', err));
-}
+// const newTeamInfoData = new teamInfoModel({
+//     firstName: "employee4",
+//     lastName: "lemployee4",
+//     phoneNumber: "12444443344",
+//     email: "employee4@email.com",
+//     employeeStatus: "regular"
+// });
 
 app.get('/mongocall', async (req,res) => {
   // newLearningg();
   const learning = await learningModel.find();
   return res.json({learning11: learning});
 })
+// app.get('/saveTeamInfoData', async (req,res) => {
+//   newTeamInfoInput();
+//   const teamInfoData = await teamInfoModel.find();
+//   return res.json({teamInfo: teamInfoData});
+// })
 
-app.get('/saveTeamInfoData', async (req,res) => {
-  newTeamInfoInput();
+// POST request to save team info data
+app.post('/saveTeamInfoData', async (req, res) => {
+  console.log(req.body, "this si request data");
+  const newTeamInfoData = new teamInfoModel(req.body);
+  try {
+    await newTeamInfoData.save();
+    const teamInfoData = await teamInfoModel.find();
+    console.log(res.json({teamInfoData}), 'teamInfoData saved!');
+    res.status(201).send({ message: 'Team info data saved successfully' });
+  } catch (err) {
+    console.error('Error saving team info data:', err);
+    res.status(500).send({ message: 'Internal Server Error' });
+  }
+});
+
+app.get('/fetchTeamInfoData', async (req,res) => {
   const teamInfoData = await teamInfoModel.find();
   return res.json({teamInfo: teamInfoData});
 })
