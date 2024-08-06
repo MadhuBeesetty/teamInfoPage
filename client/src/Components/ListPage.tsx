@@ -8,7 +8,7 @@ interface IndividualData {
   phoneNumber: string;
   email: string;
   employeeStatus: string;
-  id?: String;
+  _id: string;
 }
 
 interface listPageData {
@@ -21,7 +21,7 @@ const intialEmptyData: listPageData = {"teamInfo" :[{
   phoneNumber: "",
   email: "",
   employeeStatus: "",
-  id: ""
+  _id: ""
 }]
 };
 
