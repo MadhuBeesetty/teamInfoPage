@@ -1,4 +1,11 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
+import styled from 'styled-components';
+
+export const StyledDiv = styled.div`
+  height: 200px;
+  width: 350px;
+  border: 1px solid black;
+`;
 
 interface IndividualData {
   firstName: string;
@@ -19,19 +26,22 @@ const inputData: IndividualData =
 
 const AddPage = () => {
 
-  useEffect(() => {
-    const fetchData = async () => {
-    try {
-      const res = await fetch('http://localhost:3000/saveTeamInfoData');
-      const data = await res.json();
-      console.log(data, 'this is mongodb data');
-    } catch(error){
-      console.error('Error fetching data:', error);
-    }
-  };
 
-    fetchData();
-  }, [])
+const addData = async (pageData: IndividualData) => {
+  try {
+    const res = await fetch('http://localhost:3000/saveTeamInfoData',{
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(pageData)
+    });
+    const data = await res.json();
+    console.log(data, 'this is new added data');
+  } catch(error){
+    console.error('Error fetching data:', error);
+  }
+};
 
 const [addPageData, setAddPageData] = useState<IndividualData>(inputData)
 
@@ -40,10 +50,13 @@ const updateLastName = (e: React.ChangeEvent<HTMLInputElement>) => setAddPageDat
 const updatePhoneNumber = (e: React.ChangeEvent<HTMLInputElement>) => setAddPageData({ ...addPageData, phoneNumber: e.target.value });
 const updateEmail = (e: React.ChangeEvent<HTMLInputElement>) => setAddPageData({ ...addPageData, email: e.target.value });
 const updateEmployeeType = (e: React.ChangeEvent<HTMLInputElement>) => setAddPageData({...addPageData, employeeStatus: e.target.value});
-
+console.log(addPageData)
 const onSubmit = () => {
-  // make an api call to add this new data to database;
+  addData(addPageData);
   console.log(addPageData);
+  setTimeout(function(){
+    alert("I am setTimeout");
+},100000);
 }
 
   return (
@@ -55,22 +68,31 @@ const onSubmit = () => {
           Set email, location and role.
         </p>
         <>Info</>
-        <form>
-        <label>First name:</label>
-        <input type="text" id="fname" name="fname" onChange={updateFirstName}/>
-        <label>Last name:</label>
-        <input type="text" id="lname" name="lname" onChange={updateLastName}/>
-        <label>email:</label>
-        <input type="text" id="email" name="email" onChange={updateEmail}/>
-        <label>phone:</label>
-        <input type="text" id="phone" name="phone" onChange={updatePhoneNumber}/>
-        <>Role</>
-        <input type="radio" value="regular" checked={addPageData.employeeStatus === "regular"} onChange={updateEmployeeType}/>
-        <label >Regular - Can't delete members</label>
-        <input type="radio" value="admin" checked={addPageData.employeeStatus === "admin"} onChange={updateEmployeeType}/>
-        <label >Admin - Can delete members</label>
-        <input type="submit" value="Save" onClick={onSubmit}/>
-        </form>
+        <StyledDiv>
+          <form>
+          <label>First name:</label>
+          <input type="text" id="fname" name="fname" onChange={updateFirstName}/>
+          <br></br>
+          <label>Last name:</label>
+          <input type="text" id="lname" name="lname" onChange={updateLastName}/>
+          <br></br>
+          <label>email:</label>
+          <input type="text" id="email" name="email" onChange={updateEmail}/>
+          <br></br>
+          <label>phone:</label>
+          <input type="text" id="phone" name="phone" onChange={updatePhoneNumber}/>
+          <br></br>
+          <>Role</>
+          <br></br>
+          <input type="radio" value="regular" checked={addPageData.employeeStatus === "regular"} onChange={updateEmployeeType}/>
+          <label >Regular - Can't delete members</label>
+           <br></br>
+          <input type="radio" value="admin" checked={addPageData.employeeStatus === "admin"} onChange={updateEmployeeType}/>
+          <label >Admin - Can delete members</label>
+          <br></br>
+          <input type="submit" value="Save" onClick={onSubmit}/>
+          </form>
+        </StyledDiv>
     </div>
   );
 }

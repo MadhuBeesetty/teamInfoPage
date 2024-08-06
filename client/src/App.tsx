@@ -3,7 +3,7 @@ import ListPage from './Components/ListPage';
 
 function App() {
   return (
-    <div className="App">
+    <div>
         <ListPage />
     </div>
   );

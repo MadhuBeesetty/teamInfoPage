@@ -1,16 +1,41 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect } from 'react';
 import TeamInfo from '../Components/TeamInfoPage/TeamInfo/teamInfo';
 import AddPage from './AddPage/AddPage';
-import { pageData } from './samplaeData';
 
-const ListPage = () => {
+interface IndividualData {
+  firstName: string;
+  lastName: string;
+  phoneNumber: string;
+  email: string;
+  employeeStatus: string;
+  id?: String;
+}
+
+interface listPageData {
+  teamInfo : IndividualData[];
+}
+
+const intialEmptyData: listPageData = {"teamInfo" :[{
+  firstName: "",
+  lastName: "",
+  phoneNumber: "",
+  email: "",
+  employeeStatus: "",
+  id: ""
+}]
+};
+
+const ListPage: React.FC = () => {
+
+  const [listPageData, updatelistPageData] = useState<listPageData>(intialEmptyData);
+  const [showAddPage, setShowAddPage] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
     try {
-      const res = await fetch('http://localhost:3000/mongocall');
+      const res = await fetch('http://localhost:3000/fetchTeamInfoData');
       const data = await res.json();
-      console.log(data, 'this is mongodb data');
+      updatelistPageData({ teamInfo: data.teamInfo });
     } catch(error){
       console.error('Error fetching data:', error);
     }
@@ -19,7 +44,6 @@ const ListPage = () => {
     fetchData();
   }, [])
 
-  const [showAddPage, setShowAddPage] = useState(false)
   const handleShowAddPage = () => {
     setShowAddPage(true);
   };
@@ -31,7 +55,7 @@ const ListPage = () => {
       <AddPage />
       </> :
         <>
-            <TeamInfo handleShowAddPage={handleShowAddPage} pageData={pageData}/>
+            <TeamInfo handleShowAddPage={handleShowAddPage} pageData={listPageData.teamInfo}/>
         </>
       }
 

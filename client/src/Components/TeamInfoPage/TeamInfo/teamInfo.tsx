@@ -2,10 +2,17 @@ import React, {useState} from 'react';
 import EditPage from '../../EditPage/EditPage';
 import IndividualTeamInfo from '../IndividualTeamInfo/IndividualTeamInfo';
 import ListPageHeader from '../ListPageHeader/TeamInfoPageHeader';
-import { PageData } from '../../samplaeData';
+
+interface individualData {
+  firstName: string;
+  lastName: string;
+  phoneNumber: string;
+  email: string;
+  employeeStatus: string;
+};
 
 interface TeamInfoProps {
-  pageData: PageData,
+  pageData: individualData[],
   handleShowAddPage: () => void;
 }
 
@@ -23,15 +30,15 @@ const TeamInfo: React.FC<TeamInfoProps> = ({pageData, handleShowAddPage}) => {
     <>
       {openEditpage ?
         <>
-          <EditPage individualData={pageData[tobeEditedEmployeeId]}/>
+          <EditPage individualData={pageData[1]}/>
         </> :
         <>
         <ListPageHeader onAddPageClick={handleShowAddPage}/>
-        {Object.keys(pageData).map(key =>(
-          <IndividualTeamInfo key={key}
+        {pageData.map((individualData, index) => (
+          <IndividualTeamInfo key = {index}
           onIndividualTeamInfoClick={handleShowEditPage}
-          individualData={pageData[key]}
-          employeeId={key}
+          individualData={individualData}
+          employeeId="id"
           />
         ))}
         </>
