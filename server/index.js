@@ -55,6 +55,18 @@ app.get('/fetchTeamInfoData', async (req,res) => {
   return res.json({teamInfo: teamInfoData});
 })
 
+// Endpoint to update a document
+app.put('/updateTeamInfo/:id', async (req, res) => {
+  const { id } = req.params;
+  const updateData = req.body;
+  try {
+    const updatedDocument = await teamInfoModel.findByIdAndUpdate(id, updateData, { new: true });
+    res.json(updatedDocument);
+  } catch (error) {
+    res.status(500).json({ message: 'Error updating data', error });
+  }
+});
+
 app.listen(3000, () => {
   console.log("app is running");
 })

@@ -9,6 +9,7 @@ interface individualData {
   phoneNumber: string;
   email: string;
   employeeStatus: string;
+  _id: string;
 };
 
 interface TeamInfoProps {
@@ -19,26 +20,26 @@ interface TeamInfoProps {
 const TeamInfo: React.FC<TeamInfoProps> = ({pageData, handleShowAddPage}) => {
 
   const [openEditpage, setOpenEditPage] = useState(false);
-  const [tobeEditedEmployeeId, setToBeEditedEmployeeId] = useState("");
+  const [tobeEditedEmployeeId, setToBeEditedEmployeeId] = useState<string | null>(null);
 
   const handleShowEditPage = (employeeId: string) => {
     setToBeEditedEmployeeId(employeeId);
     setOpenEditPage(true);
   };
 
+  const employeeToEdit = pageData.find(employee => employee._id === tobeEditedEmployeeId);
+
   return (
     <>
-      {openEditpage ?
-        <>
-          <EditPage individualData={pageData[1]}/>
-        </> :
+      {openEditpage && employeeToEdit ?
+          <EditPage individualData={employeeToEdit}/> :
         <>
         <ListPageHeader onAddPageClick={handleShowAddPage}/>
-        {pageData.map((individualData, index) => (
-          <IndividualTeamInfo key = {index}
+        {pageData.map((individualData) => (
+          <IndividualTeamInfo key = {individualData._id}
           onIndividualTeamInfoClick={handleShowEditPage}
           individualData={individualData}
-          employeeId="id"
+          employeeId={individualData._id}
           />
         ))}
         </>
