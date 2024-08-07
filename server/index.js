@@ -37,7 +37,6 @@ app.get('/mongocall', async (req,res) => {
 
 // POST request to save team info data
 app.post('/saveTeamInfoData', async (req, res) => {
-  console.log(req.body, "this si request data");
   const newTeamInfoData = new teamInfoModel(req.body);
   try {
     await newTeamInfoData.save();
